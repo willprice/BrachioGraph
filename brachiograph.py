@@ -588,8 +588,14 @@ class BrachioGraph:
         # convert x/y co-ordinates into motor angles
 
         hypotenuse = math.sqrt(x**2+y**2)
-        hypotenuse_angle = math.asin(x/hypotenuse)
+        hypotenuse_angle = math.atan(x/y)
 
+        # A triangle can only be constructed if it's longest side is no longer than the sum of the
+        # two other sides.
+        if hypotenuse > (self.INNER_ARM + self.OUTER_ARM):
+            raise ValueError("Unreachable position ({}, {})".format(x, y))
+
+        # Derived from cosine rule
         inner_angle = math.acos(
             (hypotenuse**2+self.INNER_ARM**2-self.OUTER_ARM**2)/(2*hypotenuse*self.INNER_ARM)
         )
