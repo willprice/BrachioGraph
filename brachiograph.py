@@ -663,6 +663,7 @@ class BrachioGraph:
 
         # move the pen up/down and left/right using the keyboard
 
+        draw = False
         while True:
             key = readchar.readchar()
 
@@ -684,10 +685,20 @@ class BrachioGraph:
                 self.current_y = self.current_y - .1
             elif key=="L":
                 self.current_y = self.current_y + .1
+            elif key=="u":
+                self.pen.up()
+                draw = False
+                print("pen up")
+                continue
+            elif key=="d":
+                self.pen.down()
+                draw = True
+                print("pen down")
+                continue
 
             print(self.current_x, self.current_y)
 
-            self.xy(self.current_x, self.current_y)
+            self.xy(self.current_x, self.current_y, draw=draw)
 
 
     # ----------------- reporting methods -----------------
