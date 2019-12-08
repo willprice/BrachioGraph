@@ -16,6 +16,10 @@ except ModuleNotFoundError:
 import tqdm
 
 
+class BoundsError(Exception):
+    pass
+
+
 class BrachioGraph:
 
     def __init__(
@@ -133,7 +137,7 @@ class BrachioGraph:
         bounds = bounds or self.bounds
 
         if not bounds:
-            return "File plotting is only possible when BrachioGraph.bounds is set."
+            raise BoundsError("File plotting is only possible when BrachioGraph.bounds is set.")
 
         with open(filename, "r") as line_file:
             lines = json.load(line_file)
@@ -147,7 +151,7 @@ class BrachioGraph:
         bounds = bounds or self.bounds
 
         if not bounds:
-            return "Line plotting is only possible when BrachioGraph.bounds is set."
+            raise BoundsError("Line plotting is only possible when BrachioGraph.bounds is set.")
 
         lines = self.rotate_and_scale_lines(lines=lines, bounds=bounds, flip=True)
 
@@ -316,7 +320,7 @@ class BrachioGraph:
         bounds = bounds or self.bounds
 
         if not bounds:
-            return "Plotting a test pattern is only possible when BrachioGraph.bounds is set."
+            raise BoundsError("Plotting a test pattern is only possible when BrachioGraph.bounds is set.")
 
         for r in tqdm.tqdm(tqdm.trange(repeat, desc='Iteration'), leave=False):
 
@@ -336,7 +340,7 @@ class BrachioGraph:
         bounds = bounds or self.bounds
 
         if not bounds:
-            return "Plotting a test pattern is only possible when BrachioGraph.bounds is set."
+            raise BoundsError("Plotting a test pattern is only possible when BrachioGraph.bounds is set.")
 
         if not reverse:
             top_y =    self.bounds[1]
@@ -360,7 +364,7 @@ class BrachioGraph:
         bounds = bounds or self.bounds
 
         if not bounds:
-            return "Plotting a test pattern is only possible when BrachioGraph.bounds is set."
+            raise BoundsError("Plotting a test pattern is only possible when BrachioGraph.bounds is set.")
 
         if not reverse:
             min_x = self.bounds[0]
@@ -384,7 +388,7 @@ class BrachioGraph:
         bounds = bounds or self.bounds
 
         if not bounds:
-            return "Box drawing is only possible when BrachioGraph.bounds is set."
+            raise BoundsError("Box drawing is only possible when BrachioGraph.bounds is set.")
 
         self.xy(bounds[0], bounds[1], wait, interpolate)
 
@@ -413,7 +417,7 @@ class BrachioGraph:
     def centre(self):
 
         if not self.bounds:
-            return "Moving to the centre is only possible when BrachioGraph.bounds is set."
+            raise BoundsError("Moving to the centre is only possible when BrachioGraph.bounds is set.")
 
         self.pen.up()
         self.xy(self.bounds[2]/2, self.bounds[3]/2)
